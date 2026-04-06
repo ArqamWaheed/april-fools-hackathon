@@ -17,13 +17,16 @@ Built for the [DEV April Fools Challenge 2026](https://dev.to/devteam/join-our-a
   - 🤖 **AI Optimizer** — Metrics & Confidence Analyst
   - 😊 **Passive-Aggressive Teammate** — Friendly Neighborhood Blocker
 
-- **Google Gemini AI Integration** — Uses `gemini-2.0-flash` to generate contextually absurd reviews based on your actual code
+- **Google Gemini AI Integration** — Uses `gemini-2.0-flash` across 3 endpoints to generate contextually absurd reviews, appeal denials, and code roasts
 - **80+ Curated Fallback Jokes** — The app works perfectly without an API key via a handcrafted template engine
+- **Appeal System** — 3-round escalation where users appeal merge blocks (bureaucratic → philosophical → existential). Always denied with escalating officer titles.
+- **Code Roast Dashboard** — Fake enterprise code quality metrics with SVG gauge, grade cards, and AI-powered confidence statements
 - **Loading Theater** — A dramatic 12-stage CI/CD pipeline animation ("Validating emotional idempotency…")
-- **7 Sample PRs** — Pre-loaded examples from "fix typo" to "implement entire todo app"
+- **10 Sample PRs** — Pre-loaded examples from "fix typo" to "vibe-coding" to "blockchain-based approval"
 - **Share Your Rejection** — One-click Twitter sharing of your block reason
-- **Easter Eggs** — Visit `/418` for a teapot surprise 🫖
+- **Easter Eggs** — Visit `/418` for an enhanced teapot experience with ASCII art, animated steam, and RFC 2324 quotes 🫖
 - **Keyboard Shortcuts** — `Ctrl+Enter` to submit/reset
+- **Gemini AI Badges** — Visible in VerdictCard and MergeBox components
 
 ## 🚀 Live Demo
 
@@ -43,15 +46,19 @@ Built for the [DEV April Fools Challenge 2026](https://dev.to/devteam/join-our-a
 ## 🏗️ Architecture
 
 ```
-Browser → POST /api/review → Prompt Builder → Gemini API → JSON → UI
-                                    ↓ (on error/no key)
-                              Fallback Generator → JSON → UI
+Browser → POST /api/review  → Prompt Builder  → Gemini API → JSON → UI
+Browser → POST /api/appeal  → Appeal Prompts  → Gemini API → JSON → UI
+Browser → POST /api/roast   → Roast Prompts   → Gemini API → JSON → UI
+                                     ↓ (on error/no key)
+                               Fallback Generator → JSON → UI
 ```
 
-- **Single API route** (`/api/review`) — rate-limited (10 req/min/IP)
-- **Dual generation paths** — Gemini AI for context-aware reviews, deterministic fallback for reliability
+- **3 API routes** — `/api/review` (review), `/api/appeal` (appeal escalation), `/api/roast` (code roast) — all rate-limited (10 req/min/IP)
+- **Dual generation paths** — Gemini AI for context-aware output, deterministic fallback for reliability
 - **Per-persona prompts** — Each reviewer persona has tailored system prompts
-- **Structured JSON output** — Gemini returns typed `ReviewOutput` via `responseMimeType: "application/json"`
+- **Appeal escalation** — 3 rounds with increasingly absurd Gemini system prompts (bureaucratic → philosophical → existential)
+- **Roast engine** — Generates fake enterprise metrics, grades, and AI confidence statements
+- **Structured JSON output** — Gemini returns typed responses via `responseMimeType: "application/json"`
 
 ## 📦 Getting Started
 
@@ -104,27 +111,33 @@ npm start
 src/
 ├── app/
 │   ├── api/review/route.ts    # API endpoint with rate limiting
-│   ├── 418/page.tsx           # 🫖 Easter egg
+│   ├── api/appeal/route.ts    # Appeal escalation endpoint
+│   ├── api/roast/route.ts     # Code roast endpoint
+│   ├── 418/page.tsx           # 🫖 Enhanced easter egg (ASCII teapot, steam)
 │   ├── not-found.tsx          # Custom 404
 │   ├── layout.tsx             # Root layout
 │   ├── page.tsx               # Main page
-│   └── globals.css            # Tailwind + animations
+│   └── globals.css            # Tailwind + animations + steam keyframes
 ├── components/
 │   ├── PRHeader.tsx           # PR breadcrumb & labels
 │   ├── CodeInput.tsx          # Code editor with line numbers
 │   ├── SamplePRSelector.tsx   # Sample PR picker
 │   ├── ReviewerSwitcher.tsx   # Persona selector
 │   ├── LoadingTheater.tsx     # CI/CD pipeline animation
-│   ├── VerdictCard.tsx        # Review verdict display
+│   ├── VerdictCard.tsx        # Review verdict display + Gemini badge
 │   ├── CheckRunList.tsx       # Status checks
 │   ├── ReviewComments.tsx     # Inline review comments
-│   └── MergeBox.tsx           # Blocked merge box
+│   ├── MergeBox.tsx           # Blocked merge box + Gemini badge
+│   ├── AppealFlow.tsx         # 3-round appeal escalation UI
+│   └── RoastDashboard.tsx     # Code quality roast with fake metrics
 └── lib/
     ├── types.ts               # TypeScript interfaces
-    ├── sample-prs.ts          # Sample data & personas
+    ├── sample-prs.ts          # 10 sample PRs & personas
     ├── fallback.ts            # Fallback generator (80+ jokes)
     ├── prompts.ts             # Gemini prompt builder
-    └── ai.ts                  # Gemini API integration
+    ├── ai.ts                  # Gemini API integration (review)
+    ├── appeal.ts              # Appeal system (prompts, fallback, Gemini)
+    └── roast.ts               # Roast dashboard (prompts, fallback, Gemini)
 ```
 
 ## 🤖 How It Works
@@ -137,6 +150,18 @@ src/
 
 The Gemini AI integration reads your actual code and PR title to generate contextually relevant (but still absurd) reviews. Without an API key, the fallback engine uses 80+ handcrafted jokes across 5 categories.
 
+### Appeal Escalation
+
+After receiving your rejection, you can appeal — but it only makes things worse. The 3-round appeal system uses different Gemini system prompts at each level:
+
+1. **Round 1** — Bureaucratic denial (Junior Compliance Intern)
+2. **Round 2** — Philosophical rejection (Senior Ethics Arbiter)
+3. **Round 3** — Existential crisis (Chief Existential Officer)
+
+### Code Roast Dashboard
+
+Request a "code quality assessment" and receive fake enterprise metrics: an SVG quality gauge, letter grades for arbitrary categories, and an AI-generated confidence statement that sounds authoritative but means nothing.
+
 ## 🎭 Sample Block Reasons
 
 - *"Code compiles, tests pass, but the universe has not consented."*
@@ -144,6 +169,12 @@ The Gemini AI integration reads your actual code and PR title to generate contex
 - *"This PR would set a precedent for productivity. Denied."*
 - *"Variable naming confidence exceeds departmental humility threshold."*
 - *"LGTM detected in prior review. Triggering automatic escalation."*
+
+### 🗣️ Sample Appeal Denials
+
+- *"Your appeal has been reviewed by the Junior Compliance Intern. The original decision stands, pending quarterly realignment."*
+- *"The Senior Ethics Arbiter has determined that merging this code raises unresolved ontological questions."*
+- *"The Chief Existential Officer has stared into the void on your behalf. The void said no."*
 
 ## 📜 License
 

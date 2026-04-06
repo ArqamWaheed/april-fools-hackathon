@@ -1,6 +1,6 @@
 import { ReviewOutput, Verdict } from "@/lib/types";
 import { PERSONAS } from "@/lib/sample-prs";
-import { ShieldAlert, ShieldX, ShieldOff } from "lucide-react";
+import { ShieldAlert, ShieldX, ShieldOff, Sparkles } from "lucide-react";
 
 interface VerdictCardProps {
   review: ReviewOutput;
@@ -41,6 +41,13 @@ export function VerdictCard({ review }: VerdictCardProps) {
       <p className="text-sm text-guardian-text leading-relaxed mb-3">
         {review.summary}
       </p>
+
+      <div className="flex items-center gap-1.5 mt-3 pt-3 border-t border-guardian-border">
+        <Sparkles className="w-3 h-3 text-blue-400" />
+        <span className="text-[10px] text-guardian-muted">
+          Analysis by <span className="text-blue-400">Gemini AI</span> · {review.comments?.length || 0} comments · {review.checks?.length || 0} checks
+        </span>
+      </div>
 
       {persona && (
         <div className="flex items-center gap-2 text-xs text-guardian-muted">

@@ -11,6 +11,8 @@ import { VerdictCard } from "@/components/VerdictCard";
 import { CheckRunList } from "@/components/CheckRunList";
 import { ReviewComments } from "@/components/ReviewComments";
 import { MergeBox } from "@/components/MergeBox";
+import AppealFlow from "@/components/AppealFlow";
+import RoastDashboard from "@/components/RoastDashboard";
 import { Shield, Zap, RotateCcw, ExternalLink, Code2, Sparkles } from "lucide-react";
 import Link from "next/link";
 
@@ -268,6 +270,15 @@ export default function Home() {
               blockReason={review.blockReason}
               nextSteps={review.nextSteps}
             />
+
+            <AppealFlow
+              code={code}
+              prTitle={prTitle}
+              originalBlockReason={review.blockReason}
+              persona={persona}
+            />
+
+            <RoastDashboard code={code} prTitle={prTitle} />
 
             {/* Action bar */}
             <div className="flex flex-col sm:flex-row gap-3">

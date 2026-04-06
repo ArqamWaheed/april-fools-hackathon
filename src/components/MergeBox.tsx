@@ -1,4 +1,4 @@
-import { Lock, GitMerge, AlertTriangle } from "lucide-react";
+import { Lock, GitMerge, AlertTriangle, Sparkles } from "lucide-react";
 
 interface MergeBoxProps {
   blockReason: string;
@@ -27,6 +27,10 @@ export function MergeBox({ blockReason, nextSteps }: MergeBoxProps) {
           </span>
         </div>
         <p className="text-sm text-guardian-text">{blockReason}</p>
+        <div className="flex items-center gap-1 mt-1.5">
+          <Sparkles className="w-2.5 h-2.5 text-blue-400" />
+          <span className="text-[9px] text-guardian-muted">Blocked by Gemini-powered analysis</span>
+        </div>
       </div>
 
       {/* Next steps */}

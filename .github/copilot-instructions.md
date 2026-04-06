@@ -52,10 +52,12 @@ Before doing **ANY** work on **ANY** prompt, read **`MEMORY.md`** in the project
 | File | Purpose |
 |---|---|
 | `src/lib/types.ts` | All TypeScript interfaces — single source of truth for data shapes |
-| `src/lib/sample-prs.ts` | 7 sample PRs, 5 reviewer personas, 12 loading stages |
+| `src/lib/sample-prs.ts` | 10 sample PRs, 5 reviewer personas, 12 loading stages |
 | `src/lib/fallback.ts` | Fallback review template generator (80+ jokes) |
 | `src/lib/prompts.ts` | Gemini prompt builder per persona |
 | `src/lib/ai.ts` | Gemini API integration with automatic fallback |
+| `src/lib/appeal.ts` | Appeal system — prompts, fallback, Gemini integration (same pattern as ai.ts) |
+| `src/lib/roast.ts` | Roast dashboard — prompts, fallback, Gemini integration (same pattern as ai.ts) |
 
 ### Pages (`src/app/`)
 
@@ -65,10 +67,12 @@ Before doing **ANY** work on **ANY** prompt, read **`MEMORY.md`** in the project
 | `src/app/page.tsx` | Main page — orchestrates all components |
 | `src/app/globals.css` | Tailwind directives + animations + scrollbar + selection styles |
 | `src/app/api/review/route.ts` | POST endpoint — rate limiting (10 req/min/IP), validation, Gemini call |
-| `src/app/418/page.tsx` | 🫖 Easter egg teapot page (RFC 2324) |
+| `src/app/api/appeal/route.ts` | POST endpoint — 3-round appeal escalation via Gemini |
+| `src/app/api/roast/route.ts` | POST endpoint — code roast dashboard via Gemini |
+| `src/app/418/page.tsx` | 🫖 Enhanced easter egg teapot page (ASCII art, steam animation, RFC 2324) |
 | `src/app/not-found.tsx` | Custom 404 page with on-brand humor |
 
-### Components (`src/components/` — 9 total)
+### Components (`src/components/` — 11 total)
 
 | Component | Purpose |
 |---|---|
@@ -77,26 +81,33 @@ Before doing **ANY** work on **ANY** prompt, read **`MEMORY.md`** in the project
 | `SamplePRSelector.tsx` | Sample PR picker buttons |
 | `ReviewerSwitcher.tsx` | Persona selector with descriptions |
 | `LoadingTheater.tsx` | Animated pipeline with 12-stage progress bar |
-| `VerdictCard.tsx` | Verdict display with persona info |
+| `VerdictCard.tsx` | Verdict display with persona info + Gemini AI badge |
 | `CheckRunList.tsx` | Status checks list (all failing) |
 | `ReviewComments.tsx` | Inline review comments |
-| `MergeBox.tsx` | Blocked merge box with rotating disabled-button messages |
+| `MergeBox.tsx` | Blocked merge box with rotating disabled-button messages + Gemini AI badge |
+| `AppealFlow.tsx` | 3-round appeal escalation UI (bureaucratic → philosophical → existential) |
+| `RoastDashboard.tsx` | Code quality roast with SVG gauge, metric cards, AI confidence statement |
 
 ---
 
 ## Architecture
 
 ```
-Browser → POST /api/review → Prompt Builder → Gemini API → JSON → UI
+Browser → POST /api/review  → Prompt Builder  → Gemini API → JSON → UI
+Browser → POST /api/appeal  → Appeal Prompts  → Gemini API → JSON → UI
+Browser → POST /api/roast   → Roast Prompts   → Gemini API → JSON → UI
                                     ↓ (on failure or no API key)
                               Fallback Generator → JSON → UI
 ```
 
-- Single main page, single API route, plus 418 + 404 pages
-- Output is always `ReviewOutput` JSON regardless of source (AI or fallback)
+- Main page + 3 API routes (review, appeal, roast) + 418 + 404 pages
+- Output is always structured JSON regardless of source (AI or fallback)
 - **Fallback is the real product** — the app works fully without an API key
 - 5 reviewer personas with distinct prompt presets
-- Rate limiting: 10 requests/minute/IP (in-memory store)
+- Appeal system: 3 escalation rounds with different Gemini system prompts
+- Roast dashboard: fake enterprise metrics with AI explanations
+- `appeal.ts` and `roast.ts` follow the same Gemini integration pattern as `ai.ts` (prompts → Gemini call → fallback on failure)
+- Rate limiting: 10 requests/minute/IP (in-memory store) on all endpoints
 
 ### Persona IDs (use underscores)
 

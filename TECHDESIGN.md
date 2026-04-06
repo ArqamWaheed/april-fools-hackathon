@@ -3,35 +3,76 @@
 ## Architecture Overview
 
 ```
-┌─────────────────────────────────────────────────┐
-│                   Browser                        │
-│                                                  │
-│  ┌─────────────┐  ┌──────────┐  ┌────────────┐  │
-│  │ Input Panel │  │ Loading  │  │  Review    │  │
-│  │ (code/PR)   │──▶│ Theater  │──▶│ Dashboard  │  │
-│  └─────────────┘  └──────────┘  └────────────┘  │
-│         │                             │          │
-│         │         ┌──────────┐        │          │
-│         │         │ Reviewer │        │          │
-│         └────────▶│ Switcher │────────┘          │
-│                   └──────────┘                   │
-└──────────────────────┬───────────────────────────┘
-                       │ POST /api/review
-                       ▼
-┌──────────────────────────────────────────────────┐
-│               Next.js API Route                   │
-│                                                   │
-│  ┌──────────┐   ┌────────────┐   ┌────────────┐  │
-│  │ Prompt   │──▶│ AI Service │──▶│ Normalizer │  │
-│  │ Builder  │   │ (Gemini)   │   │ (JSON)     │  │
-│  └──────────┘   └─────┬──────┘   └────────────┘  │
-│                       │ fallback                  │
-│                       ▼                           │
-│                ┌─────────────┐                    │
-│                │  Template   │                    │
-│                │  Generator  │                    │
-│                └─────────────┘                    │
-└──────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│                         Browser                               │
+│                                                               │
+│  ┌──────────┐  ┌──────────┐  ┌────────────┐  ┌───────────┐  │
+│  │  Input   │  │ Loading  │  │  Review    │  │  Appeal + │  │
+│  │  Panel   │─▶│ Theater  │─▶│ Dashboard  │─▶│  Roast    │  │
+│  └──────────┘  └──────────┘  └────────────┘  └───────────┘  │
+│       │                            │               │          │
+└───────┼────────────────────────────┼───────────────┼──────────┘
+        │                            │               │
+        │ POST /api/review           │ POST          │ POST
+        │                            │ /api/appeal   │ /api/roast
+        ▼                            ▼               ▼
+┌──────────────────────────────────────────────────────────────┐
+│                    Next.js API Routes                         │
+│                                                               │
+│  ┌─────────────────┐ ┌─────────────────┐ ┌────────────────┐  │
+│  │  /api/review    │ │  /api/appeal    │ │  /api/roast    │  │
+│  │                 │ │                 │ │                │  │
+│  │  Persona-based  │ │  Round-based    │ │  Metrics       │  │
+│  │  system prompts │ │  escalation     │ │  generator     │  │
+│  │  (5 personas)   │ │  (3 rounds)     │ │  (8 metrics)   │  │
+│  └────────┬────────┘ └────────┬────────┘ └───────┬────────┘  │
+│           │                   │                   │           │
+│           ▼                   ▼                   ▼           │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │            Google Gemini API (gemini-2.0-flash)       │    │
+│  │     responseMimeType: "application/json" · temp: 1.0  │    │
+│  └───────────────────────┬──────────────────────────────┘    │
+│                          │ fallback on error/429/no key       │
+│                          ▼                                    │
+│  ┌──────────────────────────────────────────────────────┐    │
+│  │              Fallback Template Engines                 │    │
+│  │  fallback.ts (80+ jokes) │ appeal.ts │ roast.ts       │    │
+│  └──────────────────────────────────────────────────────┘    │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Appeal Escalation Flow
+
+```
+┌──────────────┐     ┌──────────────────────────────────┐
+│  User clicks │     │  Round 1: Bureaucratic            │
+│  "Appeal     │────▶│  Officer: Senior Merge            │
+│   Block"     │     │    Arbitration Officer             │
+└──────────────┘     │  Gemini prompt: formal denial      │
+                     └───────────────┬──────────────────┘
+                                     │ DENIED
+                                     ▼
+                     ┌──────────────────────────────────┐
+                     │  Round 2: Philosophical           │
+                     │  Officer: Principal Philosophy    │
+                     │    of Code Director               │
+                     │  Gemini prompt: existential doubt  │
+                     └───────────────┬──────────────────┘
+                                     │ DENIED
+                                     ▼
+                     ┌──────────────────────────────────┐
+                     │  Round 3: Cosmic / Existential    │
+                     │  Officer: Supreme Architect of    │
+                     │    the Eternal Codebase           │
+                     │  Gemini prompt: universe-scale     │
+                     └───────────────┬──────────────────┘
+                                     │ DENIED (FINAL)
+                                     ▼
+                     ┌──────────────────────────────────┐
+                     │  "All appeals exhausted.          │
+                     │   Permanently blocked in this     │
+                     │   and all parallel universes."    │
+                     └──────────────────────────────────┘
 ```
 
 ---
@@ -77,37 +118,43 @@ mergeguardian-9000/
 │   ├── app/
 │   │   ├── layout.tsx              # Root layout, fonts, metadata
 │   │   ├── page.tsx                # Main (and only) page
-│   │   ├── globals.css             # Tailwind + custom styles
+│   │   ├── globals.css             # Tailwind + custom styles + steam keyframes
+│   │   ├── 418/
+│   │   │   └── page.tsx            # 🫖 Enhanced teapot easter egg (ASCII art, steam)
+│   │   ├── not-found.tsx           # Custom 404 page
 │   │   └── api/
-│   │       └── review/
-│   │           └── route.ts        # POST /api/review endpoint
+│   │       ├── review/
+│   │       │   └── route.ts        # POST /api/review endpoint
+│   │       ├── appeal/
+│   │       │   └── route.ts        # POST /api/appeal endpoint
+│   │       └── roast/
+│   │           └── route.ts        # POST /api/roast endpoint
 │   ├── components/
 │   │   ├── PRHeader.tsx            # Repo name, PR title, labels, branches
 │   │   ├── CodeInput.tsx           # Code editor / paste area
 │   │   ├── SamplePRSelector.tsx    # Preset PR picker
 │   │   ├── ReviewerSwitcher.tsx    # Persona selector
 │   │   ├── LoadingTheater.tsx      # Animated fake loading stages
-│   │   ├── ReviewDashboard.tsx     # Main review output container
-│   │   ├── VerdictCard.tsx         # Summary + verdict badge
+│   │   ├── VerdictCard.tsx         # Summary + verdict badge + Gemini AI badge
 │   │   ├── CheckRunList.tsx        # Fake CI check statuses
 │   │   ├── ReviewComments.tsx      # Comment thread / annotations
-│   │   ├── PolicyViolations.tsx    # Policy violation cards
-│   │   ├── MergeBox.tsx            # Disabled merge button + block reason
-│   │   └── NextSteps.tsx           # Remediation plan
+│   │   ├── MergeBox.tsx            # Disabled merge button + block reason + Gemini badge
+│   │   ├── AppealFlow.tsx          # 3-round appeal escalation UI
+│   │   └── RoastDashboard.tsx      # Code quality roast with fake metrics + SVG gauge
 │   ├── lib/
-│   │   ├── ai.ts                   # Gemini API call + prompt builder
+│   │   ├── ai.ts                   # Gemini API call + prompt builder (review)
+│   │   ├── appeal.ts               # Appeal system — prompts, fallback, Gemini integration
+│   │   ├── roast.ts                # Roast dashboard — prompts, fallback, Gemini integration
 │   │   ├── fallback.ts             # Template-based fallback generator
 │   │   ├── prompts.ts              # Reviewer persona system prompts
-│   │   ├── sample-prs.ts           # Sample PR data
+│   │   ├── sample-prs.ts           # 10 sample PRs
 │   │   └── types.ts                # ReviewOutput type definitions
-│   └── data/
-│       └── fallback-comments.json  # Curated comment bank
 ├── MEMORY.md
 ├── PRD.md
 ├── TECHDESIGN.md
 ├── research.md
 ├── package.json
-├── tailwind.config.ts
+├── tailwind.config.js
 ├── tsconfig.json
 ├── next.config.js
 └── README.md
@@ -194,6 +241,81 @@ export interface ReviewRequest {
 - AI rate limit → fallback
 - AI malformed response → fallback
 - All paths return valid `ReviewOutput`
+
+### `POST /api/appeal`
+
+**Request:**
+
+```json
+{
+  "code": "function add(a, b) { return a + b; }",
+  "prTitle": "Fix typo in button label",
+  "blockReason": "Code compiles but the universe has not consented.",
+  "round": 1
+}
+```
+
+**Response:**
+
+```json
+{
+  "denied": true,
+  "officer": "Senior Merge Arbitration Officer",
+  "response": "Your appeal has been reviewed and denied. The original block stands pending quarterly realignment.",
+  "round": 1,
+  "maxRounds": 3
+}
+```
+
+**Logic:**
+
+1. Select system prompt based on round (1: bureaucratic, 2: philosophical, 3: existential)
+2. Call Gemini API with appeal-specific prompt
+3. Always deny — escalate officer title with each round
+4. If AI fails → use fallback denial from `appeal.ts`
+5. Return structured denial response
+
+**Escalation rounds:**
+
+| Round | Style | Officer Title |
+|---|---|---|
+| 1 | Bureaucratic | Senior Merge Arbitration Officer |
+| 2 | Philosophical | Principal Philosophy of Code Director |
+| 3 | Existential | Supreme Architect of the Eternal Codebase |
+
+### `POST /api/roast`
+
+**Request:**
+
+```json
+{
+  "code": "function add(a, b) { return a + b; }",
+  "prTitle": "Fix typo in button label"
+}
+```
+
+**Response:**
+
+```json
+{
+  "overallScore": 23,
+  "grade": "D-",
+  "metrics": [
+    { "name": "Semantic Coherence", "score": 34, "grade": "D", "explanation": "..." },
+    { "name": "Variable Karma Index", "score": 12, "grade": "F", "explanation": "..." }
+  ],
+  "confidence": "Analysis performed with 97.3% confidence using Enterprise Metrics Engine v4.2.",
+  "roastSummary": "This code functions, which is frankly the most damning thing about it."
+}
+```
+
+**Logic:**
+
+1. Build roast-specific system prompt requesting fake enterprise metrics
+2. Call Gemini API with code and PR title
+3. Generate fake scores, grades, metric explanations, and confidence statement
+4. If AI fails → use fallback roast from `roast.ts`
+5. Return structured roast response
 
 ---
 
@@ -330,6 +452,29 @@ Display as a vertical progress list. Each stage gets a checkmark when "complete.
 - Red banner above: block reason text
 - Small lock icon
 - Tooltip on hover: "Merge is not permitted in this moral climate."
+- Gemini AI badge
+
+### AppealFlow
+
+- Appears below MergeBox after review is received
+- "Appeal Block" button initiates the process
+- 3 escalation rounds, each with:
+  - Officer title and round indicator
+  - Denial message from Gemini (or fallback)
+  - "Escalate" button to proceed to next round
+- After round 3: permanent "All appeals exhausted" message
+- Each round uses a different Gemini system prompt tone
+
+### RoastDashboard
+
+- Triggered via a "Roast My Code" button
+- SVG gauge showing overall quality score (0–100)
+- Grid of metric cards, each with:
+  - Metric name (e.g., "Semantic Coherence", "Variable Karma Index")
+  - Score (0–100) and letter grade (A+ to F)
+  - AI-generated explanation
+- AI confidence statement at the bottom
+- All metrics are fake but presented with enterprise seriousness
 
 ---
 
@@ -367,7 +512,7 @@ If the key is missing, the app falls back to template generation automatically.
 
 - API key is server-side only (Next.js API route)
 - No user data stored
-- Rate limiting on /api/review: 10 requests per minute per IP (simple in-memory counter)
+- Rate limiting on all API routes (/api/review, /api/appeal, /api/roast): 10 requests per minute per IP (simple in-memory counter)
 - Input sanitization: strip code to 5000 chars max before sending to AI
 - No auth needed
 

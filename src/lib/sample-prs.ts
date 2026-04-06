@@ -198,6 +198,106 @@ export default function TodoPage() {
   );
 }`,
   },
+  {
+    id: "vibe-coding",
+    title: "feat: add vibe-based code generation",
+    description: "Replace traditional programming with vibes. TypeScript types are just suggestions anyway.",
+    branch: "feature/vibe-coding",
+    files: ["src/lib/vibe-engine.ts", "src/types/vibes.d.ts"],
+    code: `// src/lib/vibe-engine.ts
+
+import { Vibe } from '../types/vibes';
+
+export function generateCode(vibe: Vibe): string {
+  if (vibe.energy === 'chaotic') {
+    return '// TODO: implement later (never)';
+  }
+
+  const confidence = Math.random();
+  if (confidence > 0.5) {
+    return \`console.log("this might work");\`;
+  }
+
+  return \`throw new Error("the vibes are off");\`;
+}
+
+export function assessVibe(code: string): Vibe {
+  return {
+    energy: code.includes('TODO') ? 'chaotic' : 'neutral',
+    alignment: code.length > 100 ? 'overengineered' : 'minimalist',
+    aura: 'questionable',
+  };
+}`,
+  },
+  {
+    id: "blockchain-approval",
+    title: "feat: decentralized merge approval via blockchain",
+    description: "Every code review is now an immutable transaction on the MergeChain™.",
+    branch: "feature/merge-chain",
+    files: ["src/lib/merge-chain.ts", "src/contracts/ApprovalToken.sol"],
+    code: `// src/lib/merge-chain.ts
+
+interface MergeBlock {
+  hash: string;
+  previousHash: string;
+  reviewer: string;
+  verdict: 'approved' | 'rejected';
+  timestamp: number;
+  nonce: number;
+}
+
+class MergeChain {
+  private chain: MergeBlock[] = [];
+
+  addReview(reviewer: string): MergeBlock {
+    const block: MergeBlock = {
+      hash: crypto.randomUUID(),
+      previousHash: this.chain.at(-1)?.hash ?? 'genesis',
+      reviewer,
+      verdict: 'rejected', // always rejected for security
+      timestamp: Date.now(),
+      nonce: Math.floor(Math.random() * 1000000),
+    };
+
+    this.chain.push(block);
+    return block;
+  }
+
+  getApprovalRate(): number {
+    return 0; // by design
+  }
+}
+
+export const mergeChain = new MergeChain();`,
+  },
+  {
+    id: "ai-standup",
+    title: "feat: AI-powered standup meeting summarizer",
+    description: "Uses AI to summarize standup meetings. Spoiler: everyone is blocked.",
+    branch: "feature/ai-standup",
+    files: ["src/lib/standup-ai.ts", "src/app/api/standup/route.ts"],
+    code: `// src/lib/standup-ai.ts
+
+interface StandupEntry {
+  developer: string;
+  yesterday: string;
+  today: string;
+  blockers: string[];
+}
+
+export async function summarizeStandup(entries: StandupEntry[]): Promise<string> {
+  const totalBlockers = entries.reduce((sum, e) => sum + e.blockers.length, 0);
+
+  if (totalBlockers === 0) {
+    return "Suspicious: no blockers reported. Scheduling follow-up meeting.";
+  }
+
+  const blocked = entries.filter(e => e.blockers.length > 0);
+  return \`\${blocked.length}/\${entries.length} developers are blocked. \` +
+    \`Productivity index: \${((entries.length - blocked.length) / entries.length * 100).toFixed(1)}%. \` +
+    \`Recommended action: schedule another meeting to discuss the blockers.\`;
+}`,
+  },
 ];
 
 // ─── Reviewer Personas ──────────────────────────────────────

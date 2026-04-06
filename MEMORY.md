@@ -6,7 +6,7 @@
 
 ## Last Updated
 
-2026-04-09T12:00:00Z
+2026-04-06T16:45:00Z
 
 ---
 
@@ -34,7 +34,7 @@
 
 ## Current Phase
 
-**Phase: Building — Day 4 IN PROGRESS** — README, DEV post draft, final polish. Deploy + submit remaining.
+**Phase: Building — Day 4 COMPLETE** — Appeal system, roast dashboard, enhanced 418, docs updated. Deploy + submit remaining.
 
 ---
 
@@ -51,13 +51,17 @@
 | `src/app/layout.tsx` | Root layout with dark mode, metadata, emoji favicon | ✅ Polished |
 | `src/app/globals.css` | Tailwind directives + animations + scrollbar + selection | ✅ Polished |
 | `src/app/api/review/route.ts` | POST endpoint — rate limiting, validation | ✅ Complete |
-| `src/app/418/page.tsx` | 🫖 Easter egg teapot page (RFC 2324) | ✅ NEW |
+| `src/app/api/appeal/route.ts` | POST endpoint — 3-round appeal escalation | ✅ NEW |
+| `src/app/api/roast/route.ts` | POST endpoint — code roast dashboard | ✅ NEW |
+| `src/app/418/page.tsx` | 🫖 Enhanced easter egg (ASCII teapot, steam animation) | ✅ Enhanced |
 | `src/app/not-found.tsx` | Custom 404 page with on-brand humor | ✅ NEW |
 | `src/lib/types.ts` | All TypeScript interfaces | ✅ Complete |
-| `src/lib/sample-prs.ts` | 7 sample PRs, 5 personas, loading stages | ✅ Complete |
+| `src/lib/sample-prs.ts` | 10 sample PRs, 5 personas, loading stages | ✅ Complete |
 | `src/lib/fallback.ts` | Fallback review generator (80+ jokes) | ✅ Complete |
 | `src/lib/prompts.ts` | Gemini prompt builder per persona | ✅ Complete |
 | `src/lib/ai.ts` | Gemini API integration with fallback | ✅ Complete |
+| `src/lib/appeal.ts` | Appeal system — prompts, fallback, Gemini integration | ✅ NEW |
+| `src/lib/roast.ts` | Roast dashboard — prompts, fallback, Gemini integration | ✅ NEW |
 | `src/components/PRHeader.tsx` | PR breadcrumb, title, labels | ✅ Complete |
 | `src/components/CodeInput.tsx` | Code textarea with file tab | ✅ Complete |
 | `src/components/SamplePRSelector.tsx` | Sample PR picker buttons | ✅ Complete |
@@ -67,6 +71,8 @@
 | `src/components/CheckRunList.tsx` | Status checks list | ✅ Complete |
 | `src/components/ReviewComments.tsx` | Inline review comments | ✅ Complete |
 | `src/components/MergeBox.tsx` | Blocked merge box with rotating messages | ✅ Polished |
+| `src/components/AppealFlow.tsx` | 3-round appeal escalation UI | ✅ NEW |
+| `src/components/RoastDashboard.tsx` | Code quality roast with fake metrics | ✅ NEW |
 | `README.md` | Comprehensive project docs, setup, architecture, features | ✅ Complete |
 | `.env.example` | Example env file for contributors (GEMINI_API_KEY) | ✅ Complete |
 | `.env.local` | Real Gemini API key (gitignored, not committed) | ✅ Present |
@@ -112,11 +118,18 @@
 - [x] Ctrl+Enter hint under submit button with kbd styling
 - [x] Build passes ✅
 
-### Day 4 (IN PROGRESS)
+### Day 4 ✅ COMPLETE
 - [x] README.md created (full project docs, setup instructions, architecture)
 - [x] DEV submission post drafted (saved in session files)
 - [x] Package.json: name → mergeguardian-9000, description added
 - [x] Share URL: dynamic window.location.origin instead of hardcoded
+- [x] Appeal system: 3-round escalation (bureaucratic → philosophical → existential)
+- [x] Code roast dashboard: fake enterprise metrics with AI explanations
+- [x] Enhanced 418 page: ASCII art teapot, animated steam, RFC 2324 quote
+- [x] 3 new sample PRs (vibe-coding, blockchain-approval, ai-standup) — now 10 total
+- [x] Gemini AI badges added to VerdictCard and MergeBox
+- [x] Steam CSS animations (new keyframes in globals.css)
+- [x] All documentation updated
 - [x] Build passes ✅
 - [ ] Deploy to Vercel
 - [ ] Capture screenshots and GIFs (for DEV post)
@@ -128,24 +141,33 @@
 ## Architecture Quick Reference
 
 ```
-Browser → POST /api/review → Prompt Builder → Gemini API → JSON → UI
-                                    ↓ (fallback)
+Browser → POST /api/review  → Prompt Builder → Gemini API → JSON → UI
+Browser → POST /api/appeal  → Appeal Prompts → Gemini API → JSON → UI
+Browser → POST /api/roast   → Roast Prompts  → Gemini API → JSON → UI
+                                    ↓ (fallback on each)
                               Template Generator → JSON → UI
 ```
 
-- Single page app, single API route
-- Output is always `ReviewOutput` JSON regardless of source
+- 3 Gemini-powered API endpoints (review, appeal, roast)
+- Output is always structured JSON regardless of source
 - 5 reviewer personas with distinct prompt presets
+- Appeal system: 3 escalation rounds (bureaucratic → philosophical → existential)
+- Roast dashboard: fake enterprise metrics with SVG gauge and AI explanations
 - Fallback templates ensure demo works without API key
 
 ---
 
 ## Important Context
 
-- Git history: 5 commits on main branch
+- Git history: multiple commits on main branch
 - `.env.local` contains `GEMINI_API_KEY` (gitignored); `.env.example` provided for contributors
 - `package.json` name is `mergeguardian-9000` with full description
 - Share button uses dynamic `window.location.origin` (not hardcoded URL)
+- 3 Gemini-powered endpoints: review, appeal, roast — all follow the same pattern (prompts → Gemini → fallback)
+- Appeal system always denies with escalating officer titles across 3 rounds
+- Roast dashboard shows fake enterprise metrics (SVG gauge, grade cards, AI confidence statement)
+- Enhanced 418 page has ASCII art teapot, animated steam, RFC 2324 quote, and teapot status dashboard
+- 10 sample PRs covering diverse humorous scenarios
 - The DEV April Fools Challenge is crowded with 418/teapot/coffee entries
 - MergeGuardian 9000 plays in the less-crowded "developer tool satire" lane
 - Top entries in the challenge combine: one-line premise + polished fake product + live demo + funny writeup
