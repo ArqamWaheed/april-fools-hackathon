@@ -1,0 +1,190 @@
+import { SamplePR, PersonaInfo } from "./types";
+
+// ─── Sample PRs ─────────────────────────────────────────────
+
+export const SAMPLE_PRS: SamplePR[] = [
+  {
+    id: "fix-typo",
+    title: "Fix typo in button label",
+    description: "Changed 'Submitt' to 'Submit' on the login page.",
+    branch: "fix/button-typo",
+    files: ["src/components/LoginButton.tsx"],
+    code: `// src/components/LoginButton.tsx
+
+export function LoginButton() {
+  return (
+    <button
+      type="submit"
+      className="btn btn-primary"
+    >
+      Submit
+    </button>
+  );
+}`,
+  },
+  {
+    id: "refactor-auth",
+    title: "Refactor auth helper to use async/await",
+    description: "Replace .then() chains with async/await in auth module.",
+    branch: "refactor/auth-async",
+    files: ["src/lib/auth.ts", "src/lib/session.ts"],
+    code: `// src/lib/auth.ts
+
+export async function authenticateUser(email: string, password: string) {
+  const user = await db.users.findByEmail(email);
+  if (!user) return null;
+
+  const valid = await bcrypt.compare(password, user.passwordHash);
+  if (!valid) return null;
+
+  const session = await createSession(user.id);
+  return { user, session };
+}
+
+async function createSession(userId: string) {
+  return db.sessions.create({
+    userId,
+    expiresAt: new Date(Date.now() + 86400000),
+    token: crypto.randomUUID(),
+  });
+}`,
+  },
+  {
+    id: "dark-mode",
+    title: "Add dark mode toggle",
+    description: "Adds a theme toggle button to the navbar and persists preference.",
+    branch: "feature/dark-mode",
+    files: ["src/components/ThemeToggle.tsx", "src/hooks/useTheme.ts"],
+    code: `// src/components/ThemeToggle.tsx
+
+import { useTheme } from '../hooks/useTheme';
+import { Moon, Sun } from 'lucide-react';
+
+export function ThemeToggle() {
+  const { theme, toggle } = useTheme();
+
+  return (
+    <button onClick={toggle} aria-label="Toggle theme">
+      {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+    </button>
+  );
+}
+
+// src/hooks/useTheme.ts
+
+import { useState, useEffect } from 'react';
+
+export function useTheme() {
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    if (saved) setTheme(saved);
+  }, []);
+
+  const toggle = () => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    localStorage.setItem('theme', next);
+    document.documentElement.classList.toggle('dark');
+  };
+
+  return { theme, toggle };
+}`,
+  },
+  {
+    id: "center-div",
+    title: "Center the hero div",
+    description: "Use flexbox to center the hero section. Finally.",
+    branch: "fix/center-div",
+    files: ["src/app/page.tsx"],
+    code: `// src/app/page.tsx
+
+export default function Home() {
+  return (
+    <main className="flex min-h-screen items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold">Welcome</h1>
+        <p className="mt-2 text-gray-500">This div is centered.</p>
+      </div>
+    </main>
+  );
+}`,
+  },
+  {
+    id: "remove-util",
+    title: "Remove unused formatCurrency util",
+    description: "This util was added in 2019 and never imported anywhere.",
+    branch: "chore/remove-dead-code",
+    files: ["src/utils/formatCurrency.ts"],
+    code: `// src/utils/formatCurrency.ts  (DELETED)
+
+/**
+ * Formats a number as USD currency string.
+ * @deprecated Nobody uses this. Nobody ever used this.
+ */
+export function formatCurrency(amount: number): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(amount);
+}`,
+  },
+];
+
+// ─── Reviewer Personas ──────────────────────────────────────
+
+export const PERSONAS: PersonaInfo[] = [
+  {
+    id: "guardian_core",
+    name: "Guardian Core",
+    title: "Senior Review Orchestrator",
+    avatar: "🛡️",
+    color: "text-guardian-accent",
+  },
+  {
+    id: "compliance_beast",
+    name: "Compliance Beast",
+    title: "Chief Policy Enforcement Officer",
+    avatar: "📋",
+    color: "text-guardian-warning",
+  },
+  {
+    id: "staff_engineer_of_doom",
+    name: "Staff Engineer of Doom",
+    title: "Principal Taste Architect",
+    avatar: "💀",
+    color: "text-guardian-purple",
+  },
+  {
+    id: "ai_optimizer",
+    name: "AI Optimizer",
+    title: "Metrics & Confidence Analyst",
+    avatar: "🤖",
+    color: "text-guardian-success",
+  },
+  {
+    id: "passive_aggressive_teammate",
+    name: "Passive-Aggressive Teammate",
+    title: "Friendly Neighborhood Blocker",
+    avatar: "😊",
+    color: "text-guardian-danger",
+  },
+];
+
+// ─── Loading Stages ─────────────────────────────────────────
+
+export const LOADING_STAGES = [
+  "Indexing codebase beliefs…",
+  "Scanning for unapproved convenience…",
+  "Aligning governance context…",
+  "Calibrating reviewer temperament…",
+  "Consulting enterprise policy matrix…",
+  "Evaluating semantic posture…",
+  "Cross-referencing naming karma…",
+  "Computing cyclomatic intention…",
+  "Validating emotional idempotency…",
+  "Reconciling merge ethics…",
+  "Preparing devastation report…",
+  "Finalizing disappointment…",
+];
