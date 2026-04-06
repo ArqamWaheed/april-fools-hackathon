@@ -130,6 +130,74 @@ export function formatCurrency(amount: number): string {
   }).format(amount);
 }`,
   },
+  {
+    id: "add-ai",
+    title: "Add AI-powered summarizer",
+    description: "Uses OpenAI GPT-4 to summarize user feedback into actionable insights.",
+    branch: "feature/ai-summarizer",
+    files: ["src/lib/ai-summarizer.ts", "src/app/api/summarize/route.ts"],
+    code: `// src/lib/ai-summarizer.ts
+
+import OpenAI from 'openai';
+
+const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+export async function summarizeFeedback(feedback: string[]): Promise<string> {
+  const response = await client.chat.completions.create({
+    model: 'gpt-4',
+    messages: [
+      { role: 'system', content: 'Summarize user feedback into 3 bullet points.' },
+      { role: 'user', content: feedback.join('\\n') },
+    ],
+    temperature: 0.3,
+  });
+
+  return response.choices[0].message.content ?? 'No summary available.';
+}`,
+  },
+  {
+    id: "todo-app",
+    title: "feat: implement entire todo app",
+    description: "Full CRUD todo app with persistence. Built during a meeting.",
+    branch: "feature/todo-app",
+    files: ["src/app/todos/page.tsx", "src/lib/todos.ts"],
+    code: `// src/app/todos/page.tsx
+
+'use client';
+import { useState } from 'react';
+
+interface Todo { id: number; text: string; done: boolean; }
+
+export default function TodoPage() {
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [input, setInput] = useState('');
+
+  const addTodo = () => {
+    if (!input.trim()) return;
+    setTodos([...todos, { id: Date.now(), text: input, done: false }]);
+    setInput('');
+  };
+
+  const toggleTodo = (id: number) => {
+    setTodos(todos.map(t => t.id === id ? { ...t, done: !t.done } : t));
+  };
+
+  return (
+    <div className="max-w-md mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Todos</h1>
+      <div className="flex gap-2 mb-4">
+        <input value={input} onChange={e => setInput(e.target.value)} className="flex-1 border p-2" />
+        <button onClick={addTodo} className="bg-blue-500 text-white px-4 py-2">Add</button>
+      </div>
+      {todos.map(t => (
+        <div key={t.id} onClick={() => toggleTodo(t.id)} className="cursor-pointer p-2">
+          <span className={t.done ? 'line-through' : ''}>{t.text}</span>
+        </div>
+      ))}
+    </div>
+  );
+}`,
+  },
 ];
 
 // ─── Reviewer Personas ──────────────────────────────────────

@@ -34,7 +34,7 @@
 
 ## Current Phase
 
-**Phase: Building — Day 2 COMPLETE** — Visual polish, 418 easter egg, responsive design, share flow, review counter.
+**Phase: Building — Day 3 COMPLETE** — Joke quality expanded, Gemini branding, keyboard shortcuts, 7 sample PRs.
 
 ---
 
@@ -99,20 +99,24 @@
 
 ## What Needs To Be Done
 
-### Day 3 (next)
-- [ ] Tune joke quality — review all fallback comments
-- [ ] Add more sample PRs or improve existing ones
-- [ ] Add rerun review flow improvements
-- [ ] Polish copy, branding, and visual details
-- [ ] Test across browsers/devices
-- [ ] Consider adding keyboard shortcuts (Ctrl+Enter to submit)
+### Day 3 ✅ COMPLETE
+- [x] Expanded joke banks: 12 comments per category (was 8), 14 checks (was 10), 16 block reasons (was 12), 18 next steps (was 14), 5 summaries per persona (was 3)
+- [x] Added 2 new sample PRs: "AI-powered summarizer" and "implement entire todo app"
+- [x] Keyboard shortcut: Ctrl+Enter to submit from anywhere, Ctrl+Enter to reset from results
+- [x] CodeInput: line counter, focus-within border glow, onSubmit Ctrl+Enter
+- [x] Prominent Gemini AI branding in footer (gradient badge with model name)
+- [x] Gemini AI badge in review metadata bar (visible in screenshots)
+- [x] Ctrl+Enter hint under submit button with kbd styling
+- [x] Build passes ✅
 
-### Day 4
+## What Needs To Be Done
+
+### Day 4 (next)
 - [ ] Final polish and responsive testing
 - [ ] Deploy to Vercel
 - [ ] Capture screenshots and GIFs
-- [ ] Write DEV submission post
-- [ ] Submit
+- [ ] Write DEV submission post (critical — writing quality is judged)
+- [ ] Submit to DEV
 
 ---
 

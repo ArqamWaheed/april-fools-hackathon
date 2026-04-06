@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { ReviewOutput, ReviewerPersona, SamplePR } from "@/lib/types";
 import { PRHeader } from "@/components/PRHeader";
 import { CodeInput } from "@/components/CodeInput";
@@ -11,7 +11,7 @@ import { VerdictCard } from "@/components/VerdictCard";
 import { CheckRunList } from "@/components/CheckRunList";
 import { ReviewComments } from "@/components/ReviewComments";
 import { MergeBox } from "@/components/MergeBox";
-import { Shield, Zap, RotateCcw, ExternalLink, Code2 } from "lucide-react";
+import { Shield, Zap, RotateCcw, ExternalLink, Code2, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 type AppState = "idle" | "loading-api" | "loading-theater" | "done";
@@ -74,6 +74,22 @@ export default function Home() {
     setError(null);
     setReviewTime(null);
   }, []);
+
+  // Ctrl+Enter to submit
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+        e.preventDefault();
+        if (state === "done") {
+          handleReset();
+        } else if (state === "idle" && code.trim()) {
+          handleSubmit();
+        }
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [state, code, handleSubmit, handleReset]);
 
   return (
     <div className="min-h-screen bg-guardian-bg flex flex-col">
@@ -165,6 +181,7 @@ export default function Home() {
               code={code}
               onChange={setCode}
               activeSample={activeSample}
+              onSubmit={handleSubmit}
             />
 
             {error && (
@@ -173,23 +190,31 @@ export default function Home() {
               </div>
             )}
 
-            <button
-              onClick={handleSubmit}
-              disabled={!code.trim() || state === "loading-api"}
-              className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-md bg-guardian-accent text-white font-medium text-sm hover:bg-guardian-accent/90 disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-[0.98]"
-            >
-              {state === "loading-api" ? (
-                <>
-                  <Zap className="w-4 h-4 animate-pulse" />
-                  Consulting the Guardian…
-                </>
-              ) : (
-                <>
-                  <Zap className="w-4 h-4" />
-                  Request Review
-                </>
-              )}
-            </button>
+            <div className="space-y-2">
+              <button
+                onClick={handleSubmit}
+                disabled={!code.trim() || state === "loading-api"}
+                className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-md bg-guardian-accent text-white font-medium text-sm hover:bg-guardian-accent/90 disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-[0.98]"
+              >
+                {state === "loading-api" ? (
+                  <>
+                    <Zap className="w-4 h-4 animate-pulse" />
+                    Consulting the Guardian…
+                  </>
+                ) : (
+                  <>
+                    <Zap className="w-4 h-4" />
+                    Request Review
+                  </>
+                )}
+              </button>
+              <p className="text-[10px] text-guardian-muted/50 text-center">
+                <kbd className="px-1 py-0.5 rounded bg-guardian-surface border border-guardian-border text-[9px]">Ctrl</kbd>
+                {" + "}
+                <kbd className="px-1 py-0.5 rounded bg-guardian-surface border border-guardian-border text-[9px]">Enter</kbd>
+                {" to submit"}
+              </p>
+            </div>
           </div>
         )}
 
@@ -211,6 +236,11 @@ export default function Home() {
 
             {/* Review metadata bar */}
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-guardian-muted font-mono">
+              <span className="flex items-center gap-1">
+                <Sparkles className="w-3 h-3 text-blue-400" />
+                <span className="text-blue-400">Gemini AI</span>
+              </span>
+              <span>·</span>
               <span>
                 reviewed in {reviewTime ? `${(reviewTime / 1000).toFixed(1)}s` : "—"}
               </span>
@@ -266,23 +296,36 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t border-guardian-border mt-auto">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 text-center">
-          <p className="text-xs text-guardian-muted">
-            MergeGuardian 9000 · Powered by{" "}
-            <span className="text-guardian-accent">Gemini AI</span> · Built for
-            the{" "}
-            <a
-              href="https://dev.to/devteam/join-our-april-fools-challenge-for-a-chance-at-tea-rrific-prizes-1ofa"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-guardian-accent hover:underline"
-            >
-              DEV April Fools Challenge 2026
-            </a>
-          </p>
-          <p className="text-[10px] text-guardian-muted/50 mt-1">
-            No code was actually reviewed in the making of this application. Approval rate: 0.00%.
-          </p>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6">
+          {/* Gemini badge — prominent for Google AI prize */}
+          <div className="flex items-center justify-center gap-2 mb-3">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-guardian-surface border border-guardian-border text-xs">
+              <Sparkles className="w-3.5 h-3.5 text-blue-400" />
+              <span className="text-guardian-muted">Powered by</span>
+              <span className="font-semibold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                Google Gemini AI
+              </span>
+              <span className="text-guardian-muted/50">·</span>
+              <span className="text-guardian-muted font-mono">gemini-2.0-flash</span>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <p className="text-xs text-guardian-muted">
+              MergeGuardian 9000 · Built for the{" "}
+              <a
+                href="https://dev.to/devteam/join-our-april-fools-challenge-for-a-chance-at-tea-rrific-prizes-1ofa"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-guardian-accent hover:underline"
+              >
+                DEV April Fools Challenge 2026
+              </a>
+            </p>
+            <p className="text-[10px] text-guardian-muted/50 mt-1">
+              No code was actually reviewed in the making of this application. Approval rate: 0.00%.
+            </p>
+          </div>
         </div>
       </footer>
     </div>
