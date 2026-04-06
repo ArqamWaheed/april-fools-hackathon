@@ -6,7 +6,7 @@
 
 ## Last Updated
 
-2026-04-06T16:00:00Z
+2026-04-09T12:00:00Z
 
 ---
 
@@ -54,8 +54,8 @@
 | `src/app/418/page.tsx` | 🫖 Easter egg teapot page (RFC 2324) | ✅ NEW |
 | `src/app/not-found.tsx` | Custom 404 page with on-brand humor | ✅ NEW |
 | `src/lib/types.ts` | All TypeScript interfaces | ✅ Complete |
-| `src/lib/sample-prs.ts` | 5 sample PRs, 5 personas, loading stages | ✅ Complete |
-| `src/lib/fallback.ts` | Fallback review generator (60+ jokes) | ✅ Complete |
+| `src/lib/sample-prs.ts` | 7 sample PRs, 5 personas, loading stages | ✅ Complete |
+| `src/lib/fallback.ts` | Fallback review generator (80+ jokes) | ✅ Complete |
 | `src/lib/prompts.ts` | Gemini prompt builder per persona | ✅ Complete |
 | `src/lib/ai.ts` | Gemini API integration with fallback | ✅ Complete |
 | `src/components/PRHeader.tsx` | PR breadcrumb, title, labels | ✅ Complete |
@@ -67,6 +67,9 @@
 | `src/components/CheckRunList.tsx` | Status checks list | ✅ Complete |
 | `src/components/ReviewComments.tsx` | Inline review comments | ✅ Complete |
 | `src/components/MergeBox.tsx` | Blocked merge box with rotating messages | ✅ Polished |
+| `README.md` | Comprehensive project docs, setup, architecture, features | ✅ Complete |
+| `.env.example` | Example env file for contributors (GEMINI_API_KEY) | ✅ Complete |
+| `.env.local` | Real Gemini API key (gitignored, not committed) | ✅ Present |
 
 ---
 
@@ -75,8 +78,8 @@
 ### Day 1 ✅ COMPLETE
 - [x] Scaffold Next.js project (manual setup — Next 14, TW v3)
 - [x] Build all UI components
-- [x] Create sample PR data (5 PRs, 5 personas, loading stages)
-- [x] Build fallback template generator (60+ jokes)
+- [x] Create sample PR data (7 PRs, 5 personas, loading stages)
+- [x] Build fallback template generator (80+ jokes)
 - [x] Build prompt builder for Gemini
 - [x] Build API route with rate limiting
 - [x] Build Gemini AI integration with fallback
@@ -139,6 +142,10 @@ Browser → POST /api/review → Prompt Builder → Gemini API → JSON → UI
 
 ## Important Context
 
+- Git history: 5 commits on main branch
+- `.env.local` contains `GEMINI_API_KEY` (gitignored); `.env.example` provided for contributors
+- `package.json` name is `mergeguardian-9000` with full description
+- Share button uses dynamic `window.location.origin` (not hardcoded URL)
 - The DEV April Fools Challenge is crowded with 418/teapot/coffee entries
 - MergeGuardian 9000 plays in the less-crowded "developer tool satire" lane
 - Top entries in the challenge combine: one-line premise + polished fake product + live demo + funny writeup
