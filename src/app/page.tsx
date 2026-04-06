@@ -281,7 +281,7 @@ export default function Home() {
               <a
                 href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
                   `MergeGuardian 9000 just blocked my PR: "${review.blockReason}" 😭\n\nTry it yourself:`
-                )}&url=${encodeURIComponent("https://mergeguardian9000.vercel.app")}`}
+                )}&url=${encodeURIComponent(typeof window !== "undefined" ? window.location.origin : "https://mergeguardian9000.vercel.app")}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 px-4 py-3 rounded-md border border-guardian-border text-guardian-muted hover:text-guardian-accent hover:border-guardian-accent font-medium text-sm transition-colors"

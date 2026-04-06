@@ -1,7 +1,7 @@
 {
-  "name": "april-fools-hackathon",
+  "name": "mergeguardian-9000",
   "version": "1.0.0",
-  "description": "",
+  "description": "AI-powered code review that blocks every merge with enterprise-grade excuses. 0% approval rate.",
   "main": "index.js",
   "scripts": {
     "dev": "next dev",

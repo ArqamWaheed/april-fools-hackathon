@@ -34,7 +34,7 @@
 
 ## Current Phase
 
-**Phase: Building — Day 3 COMPLETE** — Joke quality expanded, Gemini branding, keyboard shortcuts, 7 sample PRs.
+**Phase: Building — Day 4 IN PROGRESS** — README, DEV post draft, final polish. Deploy + submit remaining.
 
 ---
 
@@ -109,14 +109,16 @@
 - [x] Ctrl+Enter hint under submit button with kbd styling
 - [x] Build passes ✅
 
-## What Needs To Be Done
-
-### Day 4 (next)
-- [ ] Final polish and responsive testing
+### Day 4 (IN PROGRESS)
+- [x] README.md created (full project docs, setup instructions, architecture)
+- [x] DEV submission post drafted (saved in session files)
+- [x] Package.json: name → mergeguardian-9000, description added
+- [x] Share URL: dynamic window.location.origin instead of hardcoded
+- [x] Build passes ✅
 - [ ] Deploy to Vercel
-- [ ] Capture screenshots and GIFs
-- [ ] Write DEV submission post (critical — writing quality is judged)
-- [ ] Submit to DEV
+- [ ] Capture screenshots and GIFs (for DEV post)
+- [ ] Publish DEV submission post
+- [ ] Submit to DEV challenge
 
 ---
 
