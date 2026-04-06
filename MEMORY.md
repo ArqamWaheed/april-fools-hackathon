@@ -6,7 +6,7 @@
 
 ## Last Updated
 
-2026-04-07T01:00:00Z
+2026-04-06T16:00:00Z
 
 ---
 
@@ -34,7 +34,7 @@
 
 ## Current Phase
 
-**Phase: Building — Day 1 COMPLETE** — Full app scaffolded, all UI components built, build passes, API works.
+**Phase: Building — Day 2 COMPLETE** — Visual polish, 418 easter egg, responsive design, share flow, review counter.
 
 ---
 
@@ -47,10 +47,12 @@
 | `TECHDESIGN.md` | Technical design and architecture | ✅ Complete |
 | `MEMORY.md` | This file — living project memory | ✅ Active |
 | `.github/copilot-instructions.md` | Agent instructions for Copilot | ✅ Complete |
-| `src/app/page.tsx` | Main page — orchestrates all components | ✅ Complete |
-| `src/app/layout.tsx` | Root layout with dark mode, metadata | ✅ Complete |
-| `src/app/globals.css` | Tailwind directives + custom animations | ✅ Complete |
+| `src/app/page.tsx` | Main page — orchestrates all components | ✅ Polished |
+| `src/app/layout.tsx` | Root layout with dark mode, metadata, emoji favicon | ✅ Polished |
+| `src/app/globals.css` | Tailwind directives + animations + scrollbar + selection | ✅ Polished |
 | `src/app/api/review/route.ts` | POST endpoint — rate limiting, validation | ✅ Complete |
+| `src/app/418/page.tsx` | 🫖 Easter egg teapot page (RFC 2324) | ✅ NEW |
+| `src/app/not-found.tsx` | Custom 404 page with on-brand humor | ✅ NEW |
 | `src/lib/types.ts` | All TypeScript interfaces | ✅ Complete |
 | `src/lib/sample-prs.ts` | 5 sample PRs, 5 personas, loading stages | ✅ Complete |
 | `src/lib/fallback.ts` | Fallback review generator (60+ jokes) | ✅ Complete |
@@ -59,12 +61,12 @@
 | `src/components/PRHeader.tsx` | PR breadcrumb, title, labels | ✅ Complete |
 | `src/components/CodeInput.tsx` | Code textarea with file tab | ✅ Complete |
 | `src/components/SamplePRSelector.tsx` | Sample PR picker buttons | ✅ Complete |
-| `src/components/ReviewerSwitcher.tsx` | Persona selector | ✅ Complete |
-| `src/components/LoadingTheater.tsx` | Animated review pipeline steps | ✅ Complete |
+| `src/components/ReviewerSwitcher.tsx` | Persona selector with descriptions | ✅ Polished |
+| `src/components/LoadingTheater.tsx` | Animated pipeline with progress bar | ✅ Polished |
 | `src/components/VerdictCard.tsx` | Verdict display with persona | ✅ Complete |
 | `src/components/CheckRunList.tsx` | Status checks list | ✅ Complete |
 | `src/components/ReviewComments.tsx` | Inline review comments | ✅ Complete |
-| `src/components/MergeBox.tsx` | Blocked merge box with disabled button | ✅ Complete |
+| `src/components/MergeBox.tsx` | Blocked merge box with rotating messages | ✅ Polished |
 
 ---
 
@@ -72,29 +74,38 @@
 
 ### Day 1 ✅ COMPLETE
 - [x] Scaffold Next.js project (manual setup — Next 14, TW v3)
-- [x] Build all UI components (PRHeader, CodeInput, SamplePRSelector, ReviewerSwitcher, LoadingTheater, VerdictCard, CheckRunList, ReviewComments, MergeBox)
+- [x] Build all UI components
 - [x] Create sample PR data (5 PRs, 5 personas, loading stages)
 - [x] Build fallback template generator (60+ jokes)
 - [x] Build prompt builder for Gemini
 - [x] Build API route with rate limiting
 - [x] Build Gemini AI integration with fallback
 - [x] Build main page orchestrating everything
-- [x] ✅ Build passes, API returns valid responses
+
+### Day 2 ✅ COMPLETE
+- [x] Test full flow end-to-end (all 5 personas verified)
+- [x] Polish loading theater (progress bar, percentage, final delay)
+- [x] Add 418 teapot easter egg page (/418 route)
+- [x] Add custom 404 page with on-brand humor
+- [x] Visual polish: warning banner, review counter, review metadata
+- [x] Responsive design: grid persona selector, sm breakpoints throughout
+- [x] Share rejection button (Twitter intent link)
+- [x] Enhanced CSS: custom scrollbar, selection color, focus rings
+- [x] Emoji favicon (🛡️), improved OG/Twitter meta tags
+- [x] Reviewer persona descriptions shown on selection
+- [x] Merge box rotating disabled button messages
+- [x] GitHub repo link in header
+- [x] Build passes ✅
 
 ## What Needs To Be Done
 
-### Day 2 (next)
-- [ ] Wire up Gemini API with real key (test with GEMINI_API_KEY env var)
-- [ ] Test full flow end-to-end in browser
-- [ ] Polish loading theater animation timing
-- [ ] Add 418 easter egg page/response
-- [ ] Improve visual polish and responsive design
-
-### Day 3
+### Day 3 (next)
 - [ ] Tune joke quality — review all fallback comments
+- [ ] Add more sample PRs or improve existing ones
 - [ ] Add rerun review flow improvements
 - [ ] Polish copy, branding, and visual details
 - [ ] Test across browsers/devices
+- [ ] Consider adding keyboard shortcuts (Ctrl+Enter to submit)
 
 ### Day 4
 - [ ] Final polish and responsive testing

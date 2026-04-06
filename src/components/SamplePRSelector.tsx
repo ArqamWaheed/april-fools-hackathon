@@ -12,14 +12,14 @@ export function SamplePRSelector({ activeSample, onSelect }: SamplePRSelectorPro
   return (
     <div>
       <p className="text-xs text-guardian-muted mb-2 uppercase tracking-wider font-medium">
-        Sample Pull Requests
+        Or try a sample PR
       </p>
       <div className="flex flex-wrap gap-2">
         {SAMPLE_PRS.map((pr) => (
           <button
             key={pr.id}
             onClick={() => onSelect(pr)}
-            className={`text-xs px-3 py-1.5 rounded-md border transition-colors ${
+            className={`text-xs px-3 py-1.5 rounded-md border transition-all ${
               activeSample?.id === pr.id
                 ? "bg-guardian-accent/20 border-guardian-accent text-guardian-accent"
                 : "bg-guardian-surface border-guardian-border text-guardian-muted hover:text-guardian-text hover:border-guardian-muted"
