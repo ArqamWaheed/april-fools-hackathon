@@ -32,7 +32,7 @@ Built for the [DEV April Fools Challenge 2026](https://dev.to/devteam/join-our-a
 
 ## 🚀 Live Demo
 
-**[mergeguardian9000.vercel.app](https://mergeguardian9000.vercel.app)**
+**[april-fools-hackathon.vercel.app](https://april-fools-hackathon.vercel.app)**
 
 ## 🛠️ Tech Stack
 
