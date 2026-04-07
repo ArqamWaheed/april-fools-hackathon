@@ -19,7 +19,7 @@ const VERDICT_CONFIG: Record<Verdict, { label: string; color: string; icon: type
   },
   spiritually_rejected: {
     label: "SPIRITUALLY REJECTED",
-    color: "text-guardian-purple border-guardian-purple bg-purple-500/10",
+    color: "text-guardian-purple border-guardian-purple bg-guardian-purple/10",
     icon: ShieldOff,
   },
 };
@@ -42,23 +42,20 @@ export function VerdictCard({ review }: VerdictCardProps) {
         {review.summary}
       </p>
 
-      <div className="flex items-center gap-1.5 mt-3 pt-3 border-t border-guardian-border">
-        <Sparkles className="w-3 h-3 text-blue-400" />
-        <span className="text-[10px] text-guardian-muted">
-          Analysis by <span className="text-blue-400">Gemini AI</span> · {review.comments?.length || 0} comments · {review.checks?.length || 0} checks
+      <div className="flex items-center justify-between gap-2 mt-3 pt-3 border-t border-guardian-border flex-wrap">
+        {persona && (
+          <div className="flex items-center gap-2 text-xs text-guardian-muted">
+            <span className="text-base">{persona.avatar}</span>
+            <span>
+              Reviewed by <strong className={persona.color}>{persona.name}</strong> · {persona.title}
+            </span>
+          </div>
+        )}
+        <span className="flex items-center gap-1 text-[10px] text-guardian-muted">
+          <Sparkles className="w-3 h-3 text-blue-400" />
+          <span className="text-blue-400">Gemini AI</span> · {review.comments?.length || 0} comments
         </span>
       </div>
-
-      {persona && (
-        <div className="flex items-center gap-2 text-xs text-guardian-muted">
-          <span className="text-base">{persona.avatar}</span>
-          <span>
-            Reviewed by <strong className={persona.color}>{persona.name}</strong>
-          </span>
-          <span>·</span>
-          <span>{persona.title}</span>
-        </div>
-      )}
     </div>
   );
 }

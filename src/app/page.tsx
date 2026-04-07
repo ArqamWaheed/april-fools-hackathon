@@ -154,29 +154,23 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-5 flex-1">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-4 sm:py-6 space-y-4 flex-1">
         {/* Input section — hide when showing results */}
         {state !== "done" && (
-          <div className="space-y-4 animate-fade-in">
+          <div className="space-y-3 animate-fade-in">
             <PRHeader
               prTitle={prTitle}
               branch={activeSample?.branch || "feature/unknown"}
               labels={["needs-review", "ai-reviewed"]}
             />
 
-            {/* PR Title input */}
-            <div>
-              <label className="text-xs text-guardian-muted uppercase tracking-wider font-medium block mb-1">
-                PR Title
-              </label>
-              <input
-                type="text"
-                value={prTitle}
-                onChange={(e) => setPrTitle(e.target.value)}
-                className="w-full bg-guardian-surface border border-guardian-border rounded-md px-3 py-2 text-sm text-guardian-text focus:outline-none focus:border-guardian-accent transition-colors"
-                placeholder="feat: add something incredible"
-              />
-            </div>
+            <input
+              type="text"
+              value={prTitle}
+              onChange={(e) => setPrTitle(e.target.value)}
+              className="w-full bg-guardian-surface border border-guardian-border rounded-md px-3 py-2 text-sm text-guardian-text focus:outline-none focus:border-guardian-accent transition-colors"
+              placeholder="feat: add something incredible"
+            />
 
             <SamplePRSelector
               activeSample={activeSample}
@@ -237,7 +231,7 @@ export default function Home() {
 
         {/* Results */}
         {state === "done" && review && (
-          <div className="space-y-4 animate-fade-in">
+          <div className="space-y-3 animate-fade-in">
             <PRHeader
               prTitle={prTitle}
               branch={activeSample?.branch || "feature/unknown"}

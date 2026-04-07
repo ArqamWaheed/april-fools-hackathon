@@ -27,13 +27,13 @@ interface RoastDashboardProps {
 function getScoreColor(score: number): string {
   if (score < 20) return "bg-guardian-danger";
   if (score < 40) return "bg-guardian-warning";
-  return "bg-yellow-500";
+  return "bg-guardian-warning";
 }
 
 function getScoreTextColor(score: number): string {
   if (score < 20) return "text-guardian-danger";
   if (score < 40) return "text-guardian-warning";
-  return "text-yellow-500";
+  return "text-guardian-warning";
 }
 
 function getGradeBadgeClasses(grade: string): string {
@@ -42,7 +42,7 @@ function getGradeBadgeClasses(grade: string): string {
     return "bg-guardian-danger/15 text-guardian-danger border-guardian-danger/20";
   if (g.startsWith("C"))
     return "bg-guardian-warning/15 text-guardian-warning border-guardian-warning/20";
-  return "bg-yellow-500/15 text-yellow-500 border-yellow-500/20";
+  return "bg-guardian-warning/15 text-guardian-warning border-guardian-warning/20";
 }
 
 function ScoreRing({

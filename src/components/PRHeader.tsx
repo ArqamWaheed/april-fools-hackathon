@@ -39,21 +39,13 @@ export function PRHeader({ prTitle, branch, labels }: PRHeaderProps) {
         {labels.map((label) => (
           <span
             key={label}
-            className="text-xs px-2 py-0.5 rounded-full font-medium border"
-            style={{
-              borderColor:
-                label === "blocked"
-                  ? "#f85149"
-                  : label === "ai-reviewed"
-                  ? "#58a6ff"
-                  : "#d29922",
-              color:
-                label === "blocked"
-                  ? "#f85149"
-                  : label === "ai-reviewed"
-                  ? "#58a6ff"
-                  : "#d29922",
-            }}
+            className={`text-xs px-2 py-0.5 rounded-full font-medium border ${
+              label === "blocked"
+                ? "border-guardian-danger text-guardian-danger"
+                : label === "ai-reviewed"
+                ? "border-guardian-accent text-guardian-accent"
+                : "border-guardian-warning text-guardian-warning"
+            }`}
           >
             {label}
           </span>

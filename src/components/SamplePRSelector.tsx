@@ -9,26 +9,30 @@ interface SamplePRSelectorProps {
 }
 
 export function SamplePRSelector({ activeSample, onSelect }: SamplePRSelectorProps) {
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selected = SAMPLE_PRS.find((pr) => pr.id === e.target.value);
+    if (selected) onSelect(selected);
+  };
+
   return (
     <div>
-      <p className="text-xs text-guardian-muted mb-2 uppercase tracking-wider font-medium">
+      <label className="text-xs text-guardian-muted mb-1 block">
         Or try a sample PR
-      </p>
-      <div className="flex flex-wrap gap-2">
+      </label>
+      <select
+        value={activeSample?.id ?? ""}
+        onChange={handleChange}
+        className="w-full bg-guardian-surface border border-guardian-border rounded-md text-sm text-guardian-text px-3 py-1.5 focus:outline-none focus:border-guardian-accent"
+      >
+        <option value="" disabled>
+          Select a sample PR to try...
+        </option>
         {SAMPLE_PRS.map((pr) => (
-          <button
-            key={pr.id}
-            onClick={() => onSelect(pr)}
-            className={`text-xs px-3 py-1.5 rounded-md border transition-all ${
-              activeSample?.id === pr.id
-                ? "bg-guardian-accent/20 border-guardian-accent text-guardian-accent"
-                : "bg-guardian-surface border-guardian-border text-guardian-muted hover:text-guardian-text hover:border-guardian-muted"
-            }`}
-          >
+          <option key={pr.id} value={pr.id}>
             {pr.title}
-          </button>
+          </option>
         ))}
-      </div>
+      </select>
     </div>
   );
 }

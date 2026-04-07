@@ -17,7 +17,7 @@ export function MergeBox({ blockReason, nextSteps }: MergeBoxProps) {
   const buttonMsg = MERGE_BUTTON_MESSAGES[Math.floor(Math.random() * MERGE_BUTTON_MESSAGES.length)];
 
   return (
-    <div className="border border-guardian-danger/50 rounded-lg overflow-hidden pulse-glow">
+    <div className="border border-guardian-danger/50 rounded-lg overflow-hidden">
       {/* Block reason banner */}
       <div className="bg-guardian-danger/10 border-b border-guardian-danger/30 px-4 py-3">
         <div className="flex items-center gap-2 mb-1">

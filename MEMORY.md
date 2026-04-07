@@ -6,7 +6,7 @@
 
 ## Last Updated
 
-2026-04-07T10:57:00Z
+2026-04-08T05:00:00Z
 
 ---
 
@@ -34,7 +34,7 @@
 
 ## Current Phase
 
-**Phase: Building — Day 4 COMPLETE** — Appeal system, roast dashboard, enhanced 418, docs updated. Deploy + submit remaining.
+**Phase: Polish & Submit** — UI redesign complete. Competitive analysis done. Deploy + submit remaining.
 
 ---
 
@@ -49,7 +49,7 @@
 | `.github/copilot-instructions.md` | Agent instructions for Copilot | ✅ Complete |
 | `src/app/page.tsx` | Main page — orchestrates all components | ✅ Polished |
 | `src/app/layout.tsx` | Root layout with dark mode, metadata, emoji favicon | ✅ Polished |
-| `src/app/globals.css` | Tailwind directives + animations + scrollbar + selection | ✅ Polished |
+| `src/app/globals.css` | Tailwind directives + animations + scrollbar + selection (glow/shimmer removed) | ✅ Polished |
 | `src/app/api/review/route.ts` | POST endpoint — rate limiting, validation | ✅ Complete |
 | `src/app/api/appeal/route.ts` | POST endpoint — 3-round appeal escalation | ✅ NEW |
 | `src/app/api/roast/route.ts` | POST endpoint — code roast dashboard | ✅ NEW |
@@ -67,13 +67,13 @@
 | `src/components/SamplePRSelector.tsx` | Sample PR picker buttons | ✅ Complete |
 | `src/components/ReviewerSwitcher.tsx` | Persona selector with descriptions | ✅ Polished |
 | `src/components/LoadingTheater.tsx` | Animated pipeline with progress bar | ✅ Polished |
-| `src/components/VerdictCard.tsx` | Verdict display with persona | ✅ Complete |
-| `src/components/CheckRunList.tsx` | Status checks list | ✅ Complete |
-| `src/components/ReviewComments.tsx` | Inline review comments | ✅ Complete |
+| `src/components/VerdictCard.tsx` | Verdict display with persona | ✅ Polished |
+| `src/components/CheckRunList.tsx` | Status checks list | ✅ Polished |
+| `src/components/ReviewComments.tsx` | Inline review comments | ✅ Polished |
 | `src/components/MergeBox.tsx` | Blocked merge box with rotating messages | ✅ Polished |
 | `src/components/AppealFlow.tsx` | 3-round appeal escalation UI | ✅ NEW |
 | `src/components/RoastDashboard.tsx` | Code quality roast with fake metrics | ✅ NEW |
-| `src/components/ApiKeyInput.tsx` | Client-side Gemini API key input (localStorage) | ✅ NEW |
+| `src/components/ApiKeyInput.tsx` | Client-side Gemini API key input (localStorage, always visible) | ✅ Polished |
 | `README.md` | Comprehensive project docs, setup, architecture, features | ✅ Complete |
 | `.env.example` | Example env file for contributors (GEMINI_API_KEY) | ✅ Complete |
 | `.env.local` | Real Gemini API key (gitignored, not committed) | ✅ Present |
@@ -132,6 +132,24 @@
 - [x] Steam CSS animations (new keyframes in globals.css)
 - [x] All documentation updated
 - [x] Build passes ✅
+- [x] UI Redesign: SamplePRSelector → compact dropdown (was 10 inline buttons)
+- [x] UI Redesign: ApiKeyInput → always visible (reverted collapsible per user request)
+- [x] UI Redesign: Removed pulse-glow and shimmer animations (uncanny glow effects)
+- [x] UI Redesign: Tightened page spacing (reduced padding, removed redundant PR Title label)
+- [x] UI Redesign: Compacted VerdictCard (merged persona + Gemini badge into one footer row)
+- [x] UI Redesign: Reduced padding in CheckRunList and ReviewComments
+- [x] Competitive analysis: ~100 entries reviewed, top competitor BrewOps at 42 reactions
+- [x] Build passes ✅
+- [x] CheckRunList and ReviewComments made collapsible with toggle arrows (collapsed by default)
+- [x] Design consistency audit: found and fixed 4 critical + 3 medium issues
+- [x] Fixed hardcoded hex colors in PRHeader (now uses guardian-* Tailwind classes)
+- [x] Fixed non-guardian SEVERITY_COLORS in ReviewComments (mapped to guardian palette)
+- [x] Fixed mixed bg-purple-500 in VerdictCard (now bg-guardian-purple)
+- [x] Fixed bare Tailwind yellow in RoastDashboard (now guardian-warning)
+- [x] Competitive research: analyzed ~100 entries, identified Google AI tools to integrate/mention
+- [x] Created images.md with 7 labeled image placeholders (5 screenshots + 2 diagram prompts)
+- [x] Improved DEV submission post: added Google AI Studio, Gemini CLI, Nano Banana, structured output emphasis, BYOK section, free tier details, stronger prize category section
+- [x] Build passes ✅
 - [ ] Deploy to Vercel
 - [ ] Capture screenshots and GIFs (for DEV post)
 - [ ] Publish DEV submission post
@@ -175,6 +193,15 @@ Browser → POST /api/roast   → Roast Prompts  → Gemini API → JSON → UI
 - Top entries in the challenge combine: one-line premise + polished fake product + live demo + funny writeup
 - The joke must land in under 10 seconds
 - Writing quality is explicitly judged — the post matters as much as the app
+- Design consistency pass: replaced all hardcoded hex values and bare Tailwind colors with guardian-* palette tokens in PRHeader, ReviewComments, VerdictCard, RoastDashboard
+- UI redesign removed clutter: sample PRs now a dropdown, API key collapsed by default, no glow effects
+- Competitive analysis: strongest contender for "Best Google AI Usage" — no other entry has 3 Gemini endpoints
+- Top competitor: BrewOps (42 reactions, Go HTCPCP server, excellent writing) — strong for Larry Masinter + Overall
+- SamplePRSelector uses a native `<select>` dropdown instead of 10 inline buttons
+- ApiKeyInput is always visible (user explicitly requested this — do NOT make collapsible)
+- CheckRunList and ReviewComments are collapsible with ChevronRight toggle arrows, collapsed by default
+- DEV submission post enhanced with extensive Google AI usage claims (AI Studio, Gemini CLI, Nano Banana, structured outputs, free tier, BYOK)
+- images.md created in session files with 7 labeled placeholders (#1-#7): 5 screenshots with step-by-step capture instructions + 2 diagram generation prompts for Nano Banana
 
 ---
 
