@@ -17,8 +17,10 @@ Built for the [DEV April Fools Challenge 2026](https://dev.to/devteam/join-our-a
   - 🤖 **AI Optimizer** — Metrics & Confidence Analyst
   - 😊 **Passive-Aggressive Teammate** — Friendly Neighborhood Blocker
 
-- **Google Gemini AI Integration** — Uses `gemini-2.0-flash` across 3 endpoints to generate contextually absurd reviews, appeal denials, and code roasts
+- **Google Gemini AI Integration** — Uses `gemini-2.0-flash` across 3 endpoints with 8+ system prompts for contextually absurd reviews, appeal denials, and code roasts
+- **Bring Your Own Key** — Paste your Gemini API key directly in the UI (stored in localStorage, never leaves your browser). Grab a free key from [Google AI Studio](https://aistudio.google.com/apikey)
 - **80+ Curated Fallback Jokes** — The app works perfectly without an API key via a handcrafted template engine
+- **Google Cloud Run Ready** — Includes Dockerfile and `cloudbuild.yaml` for one-command deploy to Cloud Run
 - **Appeal System** — 3-round escalation where users appeal merge blocks (bureaucratic → philosophical → existential). Always denied with escalating officer titles.
 - **Code Roast Dashboard** — Fake enterprise code quality metrics with SVG gauge, grade cards, and AI-powered confidence statements
 - **Loading Theater** — A dramatic 12-stage CI/CD pipeline animation ("Validating emotional idempotency…")
@@ -38,10 +40,11 @@ Built for the [DEV April Fools Challenge 2026](https://dev.to/devteam/join-our-a
 |-------|-----------|
 | Framework | Next.js 14 (App Router) |
 | Language | TypeScript (strict mode) |
-| Styling | Tailwind CSS v3 |
-| AI | Google Gemini API (`gemini-2.0-flash`) |
+| Styling | Tailwind CSS v3 (custom `guardian` color palette) |
+| AI | Google Gemini API (`gemini-2.0-flash`) — 3 endpoints, 8+ system prompts |
+| AI Tooling | Google AI Studio (prompt prototyping), Gemini CLI (terminal testing) |
 | Icons | Lucide React |
-| Deployment | Vercel |
+| Deployment | Vercel (live demo) + Google Cloud Run (Dockerfile + Cloud Build config) |
 
 ## 🏗️ Architecture
 
@@ -86,9 +89,9 @@ Edit `.env.local` and add your Gemini API key:
 GEMINI_API_KEY=your_key_here
 ```
 
-Get a free API key at [aistudio.google.com](https://aistudio.google.com/).
+Get a free API key at [aistudio.google.com/apikey](https://aistudio.google.com/apikey).
 
-> **Note:** The app works fully without an API key — the fallback generator produces equally hilarious reviews.
+> **Note:** You can also paste your API key directly in the UI — no `.env` file needed. The key stays in `localStorage` and never leaves your browser. The app works fully without any API key via the fallback generator.
 
 ### Development
 
@@ -104,6 +107,15 @@ Open [http://localhost:3000](http://localhost:3000).
 npm run build
 npm start
 ```
+
+### Deploy to Google Cloud Run
+
+```bash
+# Requires gcloud CLI authenticated with a GCP project
+gcloud builds submit --config cloudbuild.yaml
+```
+
+The included `Dockerfile` and `cloudbuild.yaml` handle the multi-stage build and deployment automatically. Cloud Run's free tier covers 2 million requests/month.
 
 ## 📁 Project Structure
 
@@ -122,6 +134,7 @@ src/
 │   ├── PRHeader.tsx           # PR breadcrumb & labels
 │   ├── CodeInput.tsx          # Code editor with line numbers
 │   ├── SamplePRSelector.tsx   # Sample PR picker
+│   ├── ApiKeyInput.tsx        # Gemini API key input (localStorage)
 │   ├── ReviewerSwitcher.tsx   # Persona selector
 │   ├── LoadingTheater.tsx     # CI/CD pipeline animation
 │   ├── VerdictCard.tsx        # Review verdict display + Gemini badge
@@ -182,10 +195,11 @@ MIT — because even rejected code deserves freedom.
 
 ## 🏆 DEV April Fools Challenge 2026
 
-This project was built for the [DEV April Fools Challenge](https://dev.to/devteam/join-our-april-fools-challenge-for-a-chance-at-tea-rrific-prizes-1ofa). It targets:
+This project was built for the [DEV April Fools Challenge](https://dev.to/challenges/aprilfools-2026). It targets:
 
 - 🏅 **Overall Best** — Most entertaining anti-useful app
-- 🤖 **Best Google AI Usage** — Gemini API integration for contextual humor
+- 🤖 **Best Google AI Usage** — 3 Gemini endpoints, 8+ system prompts, structured JSON, AI Studio prototyping, Gemini CLI testing, Cloud Run deployment, BYOK with AI Studio link, all on the free tier
+- 🫖 **Best Ode to Larry Masinter** — Enhanced `/418` teapot page with ASCII art, animated steam, and RFC 2324 tribute
 - ❤️ **Community Favorite** — Relatable developer pain, shareable rejections
 
 ---
