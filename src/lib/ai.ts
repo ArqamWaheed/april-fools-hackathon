@@ -2,8 +2,8 @@ import { ReviewOutput, ReviewRequest } from "./types";
 import { buildSystemPrompt, buildUserPrompt } from "./prompts";
 import { generateFallbackReview } from "./fallback";
 
-export async function generateReview(req: ReviewRequest): Promise<ReviewOutput> {
-  const apiKey = process.env.GEMINI_API_KEY;
+export async function generateReview(req: ReviewRequest, clientApiKey?: string): Promise<ReviewOutput> {
+  const apiKey = clientApiKey || process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
     return generateFallbackReview(req);

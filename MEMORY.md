@@ -6,7 +6,7 @@
 
 ## Last Updated
 
-2026-04-06T16:45:00Z
+2026-04-07T10:57:00Z
 
 ---
 
@@ -26,7 +26,7 @@
 | Stack | Next.js 14 + TypeScript + Tailwind v3 + Lucide React + Gemini API | 2026-04-06 |
 | Hosting | Vercel (free tier) | 2026-04-06 |
 | AI provider | Google Gemini (gemini-2.0-flash) | 2026-04-06 |
-| Budget | $0 (free tier only) | 2026-04-06 |
+| Client API key | Users paste Gemini key in UI, stored in localStorage, sent with each request | 2026-04-07 |
 | Deadline | April 12, 2026 at 11:59 PM PT | 2026-04-06 |
 | Build window | 4 days | 2026-04-06 |
 
@@ -73,6 +73,7 @@
 | `src/components/MergeBox.tsx` | Blocked merge box with rotating messages | ✅ Polished |
 | `src/components/AppealFlow.tsx` | 3-round appeal escalation UI | ✅ NEW |
 | `src/components/RoastDashboard.tsx` | Code quality roast with fake metrics | ✅ NEW |
+| `src/components/ApiKeyInput.tsx` | Client-side Gemini API key input (localStorage) | ✅ NEW |
 | `README.md` | Comprehensive project docs, setup, architecture, features | ✅ Complete |
 | `.env.example` | Example env file for contributors (GEMINI_API_KEY) | ✅ Complete |
 | `.env.local` | Real Gemini API key (gitignored, not committed) | ✅ Present |
@@ -161,6 +162,7 @@ Browser → POST /api/roast   → Roast Prompts  → Gemini API → JSON → UI
 
 - Git history: multiple commits on main branch
 - `.env.local` contains `GEMINI_API_KEY` (gitignored); `.env.example` provided for contributors
+- Client-side API key input: users can paste their own Gemini key in the UI (stored in localStorage, sent with each API request, server falls back to env var then to fallback generator)
 - `package.json` name is `mergeguardian-9000` with full description
 - Share button uses dynamic `window.location.origin` (not hardcoded URL)
 - 3 Gemini-powered endpoints: review, appeal, roast — all follow the same pattern (prompts → Gemini → fallback)

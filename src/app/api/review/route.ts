@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const body = (await request.json()) as ReviewRequest;
+    const body = (await request.json()) as ReviewRequest & { apiKey?: string };
 
     if (!body.code || !body.prTitle || !body.persona) {
       return NextResponse.json(
@@ -32,11 +32,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const review = await generateReview({
-      code: body.code.slice(0, 5000),
-      prTitle: body.prTitle.slice(0, 200),
-      persona: body.persona,
-    });
+    const review = await generateReview(
+      {
+        code: body.code.slice(0, 5000),
+        prTitle: body.prTitle.slice(0, 200),
+        persona: body.persona,
+      },
+      body.apiKey
+    );
 
     return NextResponse.json(review);
   } catch {

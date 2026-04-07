@@ -21,6 +21,7 @@ interface RoastResponse {
 interface RoastDashboardProps {
   code: string;
   prTitle: string;
+  apiKey?: string;
 }
 
 function getScoreColor(score: number): string {
@@ -140,7 +141,7 @@ function MetricCard({ metric }: { metric: RoastMetric }) {
   );
 }
 
-export default function RoastDashboard({ code, prTitle }: RoastDashboardProps) {
+export default function RoastDashboard({ code, prTitle, apiKey }: RoastDashboardProps) {
   const [result, setResult] = useState<RoastResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -161,7 +162,7 @@ export default function RoastDashboard({ code, prTitle }: RoastDashboardProps) {
       const res = await fetch("/api/roast", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code, prTitle }),
+        body: JSON.stringify({ code, prTitle, apiKey: apiKey || undefined }),
       });
 
       if (!res.ok) {

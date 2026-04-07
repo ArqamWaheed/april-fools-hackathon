@@ -216,8 +216,8 @@ export function generateFallbackRoast(_code: string): RoastResponse {
 
 // ─── Gemini Integration ──────────────────────────────────────
 
-export async function generateRoast(code: string, prTitle: string): Promise<RoastResponse> {
-  const apiKey = process.env.GEMINI_API_KEY;
+export async function generateRoast(code: string, prTitle: string, clientApiKey?: string): Promise<RoastResponse> {
+  const apiKey = clientApiKey || process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
     return generateFallbackRoast(code);

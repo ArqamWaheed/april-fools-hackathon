@@ -25,6 +25,7 @@ export async function POST(request: NextRequest) {
     const body = (await request.json()) as {
       code: string;
       prTitle: string;
+      apiKey?: string;
     };
 
     if (!body.code || !body.prTitle) {
@@ -36,7 +37,8 @@ export async function POST(request: NextRequest) {
 
     const roast = await generateRoast(
       body.code.slice(0, 5000),
-      body.prTitle.slice(0, 200)
+      body.prTitle.slice(0, 200),
+      body.apiKey
     );
 
     return NextResponse.json(roast);

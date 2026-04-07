@@ -13,6 +13,7 @@ import { ReviewComments } from "@/components/ReviewComments";
 import { MergeBox } from "@/components/MergeBox";
 import AppealFlow from "@/components/AppealFlow";
 import RoastDashboard from "@/components/RoastDashboard";
+import ApiKeyInput from "@/components/ApiKeyInput";
 import { Shield, Zap, RotateCcw, ExternalLink, Code2, Sparkles } from "lucide-react";
 import Link from "next/link";
 
@@ -28,7 +29,12 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [reviewCount, setReviewCount] = useState(0);
   const [reviewTime, setReviewTime] = useState<number | null>(null);
+  const [apiKey, setApiKey] = useState("");
   const timerRef = useRef<number>(0);
+
+  const handleApiKeyChange = useCallback((key: string) => {
+    setApiKey(key);
+  }, []);
 
   const handleSampleSelect = useCallback((pr: SamplePR) => {
     setActiveSample(pr);
@@ -48,7 +54,7 @@ export default function Home() {
       const res = await fetch("/api/review", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code, prTitle, persona }),
+        body: JSON.stringify({ code, prTitle, persona, apiKey: apiKey || undefined }),
       });
 
       if (!res.ok) {
@@ -63,7 +69,7 @@ export default function Home() {
       setError(err instanceof Error ? err.message : "Something went wrong");
       setState("idle");
     }
-  }, [code, prTitle, persona]);
+  }, [code, prTitle, persona, apiKey]);
 
   const handleTheaterComplete = useCallback(() => {
     setState("done");
@@ -179,6 +185,8 @@ export default function Home() {
 
             <ReviewerSwitcher active={persona} onChange={setPersona} />
 
+            <ApiKeyInput onKeyChange={handleApiKeyChange} />
+
             <CodeInput
               code={code}
               onChange={setCode}
@@ -276,9 +284,10 @@ export default function Home() {
               prTitle={prTitle}
               originalBlockReason={review.blockReason}
               persona={persona}
+              apiKey={apiKey}
             />
 
-            <RoastDashboard code={code} prTitle={prTitle} />
+            <RoastDashboard code={code} prTitle={prTitle} apiKey={apiKey} />
 
             {/* Action bar */}
             <div className="flex flex-col sm:flex-row gap-3">

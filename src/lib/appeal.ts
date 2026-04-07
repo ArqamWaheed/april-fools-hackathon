@@ -225,8 +225,8 @@ export function generateFallbackAppeal(req: AppealRequest): AppealResponse {
 
 // ─── Gemini Integration ──────────────────────────────────────
 
-export async function generateAppeal(req: AppealRequest): Promise<AppealResponse> {
-  const apiKey = process.env.GEMINI_API_KEY;
+export async function generateAppeal(req: AppealRequest, clientApiKey?: string): Promise<AppealResponse> {
+  const apiKey = clientApiKey || process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
     return generateFallbackAppeal(req);

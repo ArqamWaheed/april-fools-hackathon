@@ -29,6 +29,7 @@ export async function POST(request: NextRequest) {
       prTitle: string;
       appealRound: number;
       persona: ReviewerPersona;
+      apiKey?: string;
     };
 
     if (!body.code || !body.prTitle || !body.originalBlockReason || !body.appealRound) {
@@ -56,7 +57,7 @@ export async function POST(request: NextRequest) {
       appealRound: Math.max(1, Math.min(3, body.appealRound)),
     };
 
-    const appeal = await generateAppeal(appealReq);
+    const appeal = await generateAppeal(appealReq, body.apiKey);
 
     return NextResponse.json(appeal);
   } catch {

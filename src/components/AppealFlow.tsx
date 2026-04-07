@@ -16,6 +16,7 @@ interface AppealFlowProps {
   prTitle: string;
   originalBlockReason: string;
   persona: string;
+  apiKey?: string;
 }
 
 interface DenialRecord {
@@ -57,6 +58,7 @@ export default function AppealFlow({
   prTitle,
   originalBlockReason,
   persona,
+  apiKey,
 }: AppealFlowProps) {
   const [denials, setDenials] = useState<DenialRecord[]>([]);
   const [loading, setLoading] = useState(false);
@@ -88,6 +90,7 @@ export default function AppealFlow({
           persona,
           appealRound: round,
           previousDenials: denials.map((d) => d.response.ruling),
+          apiKey: apiKey || undefined,
         }),
       });
 
